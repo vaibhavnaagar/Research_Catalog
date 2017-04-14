@@ -36,10 +36,10 @@ li{
     <div id="hgroup">
       <h1><a href="#">Research Catalouge</a></h1>
     </div>
-    
+
     <nav>
       <ul>
-        <li><a href="search.php">Normal Search</a></li>
+        <li><a href="simple_search.php">Normal Search</a></li>
         <li><a href="advsearch.php">Advanced Search</a></li>
         <li><a href="#">Make entry</a></li>
         <li class="last"><a href="#">Log out</a></li>
@@ -52,7 +52,13 @@ li{
   <div id="container" class="clear">
     <div id="intro">
       <section class="clear">
-	<?php  
+	<?php
+    @session_start();
+    if ((@session_status() != PHP_SESSION_ACTIVE) || !(isset($_SESSION['token']))){
+      header("Location:index.php");
+      exit;
+    }
+    
 		include 'connect_db.php';
 		$conn=connect_db();
 
@@ -62,10 +68,10 @@ li{
 		if($keyword == '') {
 			die('Please enter some Information to find data.');
 		}
-		else{	
-			$tok = strtok($keyword, " \t;:,");
+		else{
+			$tok = strtok($keyword, " \t,;:");
 			$i = 0;
-			while ($tok !== false) 
+			while ($tok !== false)
 			{
 			    $check[$i] = $tok;
 			    $i++;
@@ -78,27 +84,27 @@ li{
 		}
 		$sql = $sql."r_name LIKE '%$check[$j]%' OR a_name LIKE '%$check[$j]%' OR c_name LIKE '%$check[$j]%' OR  r_year = '$check[$j]'";
 	 }
-         		
+
 			$sql = $sql." ORDER BY r_year desc, r_name, a_name ;";
 		}
 		//echo $sql;
 		if ($result=mysqli_query($conn,$sql)){
 		echo "<ul>";
 			while ($obj=mysqli_fetch_object($result)){
-				$linktopaper = "http://dx.doi.org/".$obj->r_doi;				
-				echo "				  
-		<li> <h1><a href=$linktopaper>$obj->r_name</a></h1>		
+				$linktopaper = "http://dx.doi.org/".$obj->r_doi;
+				echo "
+		<li> <h1><a href=$linktopaper>$obj->r_name</a></h1>
 			<ul>
 			  <li>Written by: $obj->a_name
 				 <ul>
 					<li>author-id: $obj->a_id</li>
 					<li>email-id: $obj->a_email</li>
-				</ul> 
+				</ul>
 			  </li>
 			  <li>Category: $obj->c_name</li>
 			  <li>Published in $obj->r_year</li>
 			</ul>
-		</li>  
+		</li>
 			";
 			}
 		echo "</ul>";
@@ -107,7 +113,7 @@ li{
 
 		mysqli_close($conn);
 	?>
-	<center> <button class="button" onclick="location='search.php'">Search again</button> <center>
+	<center> <button class="button" onclick="location='simple_search.php'">Search again</button> <center>
       </section>
     </div>
   </div>

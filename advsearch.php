@@ -1,3 +1,11 @@
+<?php
+@session_start();
+if ((@session_status() != PHP_SESSION_ACTIVE) || !(isset($_SESSION['token']))){
+  header("Location:index.php");
+  exit;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
@@ -35,10 +43,10 @@ li{
     <div id="hgroup">
       <h1><a href="#">Research Catalouge</a></h1>
     </div>
-    
+
     <nav>
       <ul>
-        <li><a href="search.php">Normal Search</a></li>
+        <li><a href="simple_search.php">Normal Search</a></li>
         <li><a href="#">Advanced Search</a></li>
         <li><a href="#">Make entry</a></li>
         <li class="last"><a href="#">Log out</a></li>
@@ -54,10 +62,10 @@ li{
         <!-- article 1 -->
   <header id="header" class="clear">
 	<div id="hgroup">
-	
+
 	<h1><b> Advanced Search</b></h1><br></br>
 	</div>
-  </header>	
+  </header>
 		<form action="advresult.php" method="post" >
 		<label>Paper Title</label>: <input type="text" name="title"><br></br>
 		<label>Author </label>: <input type="text" name="author"><br></br>

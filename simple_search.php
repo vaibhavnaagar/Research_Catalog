@@ -1,3 +1,11 @@
+<?php
+@session_start();
+if ((@session_status() != PHP_SESSION_ACTIVE) || !(isset($_SESSION['token']))){
+  header("Location:index.php");
+  exit;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
@@ -31,7 +39,7 @@ li{
     <div id="hgroup">
       <h1><a href="#">Research Catalouge</a></h1>
     </div>
-    
+
     <nav>
       <ul>
         <li><a href="#">Normal Search</a></li>
@@ -50,16 +58,16 @@ li{
         <!-- article 1 -->
   <header id="header" class="clear">
 	<div id="hgroup">
-	
+
 	<h1><b> Insert a keyword to search for</b></h1><br></br>
 	</div>
-  </header>	
+  </header>
 		<form action="searchresult.php" method="post" >
-	
+
 		Find : <input type="text" name="keytofind"><br></br>
 		<input type="submit" class="button">
 		</form>
-	
+
 
       </section>
     </div>

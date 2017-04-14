@@ -3,7 +3,7 @@
 function connect_db(){
   $servername = "localhost";
   $db_username = "root";
-  $db_password = "pranayb";
+  $db_password = "steinsgate";
   $db_name = "research_catalogue";
 
   $conn = mysqli_connect($servername, $db_username, $db_password, $db_name);
