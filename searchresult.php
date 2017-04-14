@@ -42,7 +42,7 @@ li{
         <li><a href="simple_search.php">Normal Search</a></li>
         <li><a href="advsearch.php">Advanced Search</a></li>
         <li><a href="#">Make entry</a></li>
-        <li class="last"><a href="#">Log out</a></li>
+        <li class="last"><a href="logout.php">Log out</a></li>
       </ul>
     </nav>
   </header>
@@ -58,7 +58,7 @@ li{
       header("Location:index.php");
       exit;
     }
-    
+
 		include 'connect_db.php';
 		$conn=connect_db();
 
@@ -95,10 +95,9 @@ li{
 				echo "
 		<li> <h1><a href=$linktopaper>$obj->r_name</a></h1>
 			<ul>
-			  <li>Written by: $obj->a_name
+			  <li>Author: $obj->a_name
 				 <ul>
-					<li>author-id: $obj->a_id</li>
-					<li>email-id: $obj->a_email</li>
+					<li>Institute: $obj->a_email</li>
 				</ul>
 			  </li>
 			  <li>Category: $obj->c_name</li>

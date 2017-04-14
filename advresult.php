@@ -42,7 +42,7 @@ li{
         <li><a href="simple_search.php">Normal Search</a></li>
         <li><a href="advsearch.php">Advanced Search</a></li>
         <li><a href="#">Make entry</a></li>
-        <li class="last"><a href="#">Log out</a></li>
+        <li class="last"><a href="logout.php">Log out</a></li>
       </ul>
     </nav>
   </header>
