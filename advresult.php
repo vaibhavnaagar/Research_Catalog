@@ -4,6 +4,7 @@
 <title>Research Catalouge</title>
 <meta charset="iso-8859-1">
 <link rel="stylesheet" href="styles/layout.css" type="text/css">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <!--[if lt IE 9]><script src="scripts/html5shiv.js"></script><![endif]-->
 <style>
 .button {
@@ -66,7 +67,7 @@ li{
 		$category=$_POST['category'];
 		$year=$_POST['year'];
 
-		$sql = "SELECT r_name,r_year,c_name FROM research_paper natural join written_by natural join author natural join correspond_to natural join category natural join key_map natural join words WHERE ";
+		$sql = "SELECT r_id,r_name,r_year,r_doi,r_pdf,c_name FROM research_paper natural join written_by natural join author natural join correspond_to natural join category natural join key_map natural join words WHERE ";
 		if($title == '' && $author == '' && $category == '' && $year == '') {
 			die('Please enter some Information to find data from');
 		}
@@ -84,46 +85,72 @@ li{
 				$sql = $sql."r_year = $year AND  ";
 			}
 			$sql = $sql."1 ";
-			$sql = $sql."  GROUP BY r_name,r_year,c_name ORDER BY r_year desc, r_name ;";
+			$sql = $sql."  GROUP BY r_name,r_year,r_doi,r_pdf,c_name,r_id ORDER BY r_year desc, r_name ;";
 		}
 		//echo $sql;
 		if ($result=mysqli_query($conn,$sql)){
+      $count = 0;
 		echo "<ul>";
 			while ($obj=mysqli_fetch_object($result)){
 				$linktopaper = "http://dx.doi.org/".$obj->r_doi;
-				$sql2 = "SELECT a_name,a_id,a_institute FROM research_paper natural join written_by natural join author WHERE r_name = '$obj->r_name'";		
-				$result2=mysqli_query($conn,$sql2);		
+				$sql2 = "SELECT a_name,a_id,a_institute FROM research_paper natural join written_by natural join author WHERE r_id = '$obj->r_id'";
+				$result2=mysqli_query($conn,$sql2);
 				echo "
-		<li> <h1><a href=$linktopaper>$obj->r_name</a></h1>
-			<ul>
-			  <li>Written by:<ul>";
-				while ($obj2=mysqli_fetch_object($result2))
+		<li> <h1><a href=$linktopaper target='_blank'><b style='font-style:normal;'>".htmlspecialchars($obj->r_name)."</b></a></h1>
+			<ul class='w3-ul w3-card-2'>
+			  <li><b>Authors:</b><ul>";
+        while ($obj2=mysqli_fetch_object($result2))
 				{
-					echo "	<li> $obj2->a_name
-							<ul>
-								<li>author-id: $obj2->a_id</li>
-								<li>Institute: $obj2->a_institute</li>
-							</ul></li>" ;
-						
+          if ($obj2->a_institute)
+          {
+					echo "	<li> $obj2->a_name  (Institute: $obj2->a_institute)
+							</li>" ;
+          }
+          else{
+            echo "	<li> $obj2->a_name
+  							</li>" ;
+          }
 				}
-			echo" </ul></li>
-			  <li>Category: $obj->c_name</li>
-			  <li>Published in $obj->r_year</li>
-			</ul>
-		</li>
+        $sql3 = "SELECT word FROM words natural join key_map  WHERE r_id = '$obj->r_id'";
+        $result3=mysqli_query($conn,$sql3);
+        $obj3=mysqli_fetch_object($result3);
+  			echo" </ul></li>
+  			  <li><b>Category:</b> $obj->c_name</li>
+  			  <li><b>Published Year:</b> $obj->r_year</li>
+          <script>var myvar$count = 'p_$count';</script>
+          <li><button onclick='myFunction(myvar$count)' class='w3-btn w3-block w3-black w3-left-align'>View Summary</button>
+          <div id='p_$count' class='w3-container w3-hide'>
+            <p>$obj3->word</p>
+          </div>
+          </li>
+          <li><a href='$obj->r_pdf' target='_blank' class='w3-button w3-black'>View PDF</a></li>
+  			</ul>
+  		</li>
 			";
+      $count++;
 			}
 		echo "</ul>";
-			mysqli_free_result($result);
+    mysqli_free_result($result);
+    mysqli_free_result($result2);
+		mysqli_free_result($result3);
 		}
 
 		mysqli_close($conn);
 	?>
-	<center> <button class="button" onclick="location='advsearch.php'">Search again</button> <center>
+	<center> <a href='advsearch.php' class='w3-button w3-brown w3-hover-black'>Search Again</a><center>
       </section>
     </div>
   </div>
 </div>
-
+<script>
+function myFunction(id) {
+    var x = document.getElementById(id);
+    if (x.className.indexOf("w3-show") == -1) {
+        x.className += " w3-show";
+    } else {
+        x.className = x.className.replace(" w3-show", "");
+    }
+}
+</script>
 </body>
 </html>

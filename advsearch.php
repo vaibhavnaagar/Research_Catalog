@@ -34,6 +34,50 @@ li{
     color:#555555;
     font-size: 15px;
 }
+section {
+  margin-bottom: 60px;
+  padding: 30px;
+  background-color: #efefef;
+}
+section:last-child {
+  margin-bottom: 0;
+}
+input[type="text"] {
+  display: block;
+  margin: 0;
+  width: 100%;
+  font-family: "Open Sans", sans-serif;
+  font-size: 18px;
+}
+ul.input-list {
+  list-style: none;
+  margin: 0 -10px;
+  padding: 10;
+}
+ul.input-list li {
+  display: block;
+  padding: 0 10px;
+  width: 50%;
+  float: left;
+}
+.style-1 input[type="text"] {
+  padding: 10px;
+  border: solid 1px gainsboro;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+  transition: all 600ms ease-in;
+}
+input[type="submit"]:hover{
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+  color: #383636;
+  background: #e0d7d7;
+}
+/* clear floated divs */
+.clearfix:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
 </style>
 
 </head>
@@ -48,6 +92,7 @@ li{
       <ul>
         <li><a href="simple_search.php">Normal Search</a></li>
         <li><a href="#">Advanced Search</a></li>
+        <li><a href="#">Add Paper</a></li>
         <li class="last"><a href="logout.php">Log out</a></li>
       </ul>
     </nav>
@@ -59,18 +104,30 @@ li{
     <div id="intro">
       <section class="clear">
         <!-- article 1 -->
-  <header id="header" class="clear">
+  <!--header id="header" class="clear"-->
 	<div id="hgroup">
 
-	<h1><b> Advanced Search</b></h1><br></br>
+	<h1 style="text-align:center;font-size:36px;font-style:normal;"><b> Advanced Search</b></h1><br></br>
 	</div>
-  </header>
+  <!--/header-->
 		<form action="advresult.php" method="post" >
-		<label>Paper Title</label>: <input type="text" name="title"><br></br>
-		<label>Author </label>: <input type="text" name="author"><br></br>
-		<label>Category </label>: <input type="text" name="category"><br></br>
-		<label>Year of Publication </label>: <input type="text" name="year"><br></br>
-		<input type="submit" class="button">
+      <ul class="input-list style-1 clearfix">
+        <li>
+		        <label>Paper Title</label>: <input type="text" name="title"><br></br>
+        </li>
+        <li>
+		        <label>Author </label>: <input type="text" name="author"><br></br>
+        </li>
+        <li>
+		        <label>Category </label>: <input type="text" name="category"><br></br>
+        </li>
+        <li>
+		        <label>Year of Publication </label>: <input type="text" name="year"><br></br>
+        </li>
+        <li>
+		        <input type="submit" class="button" value="Search">
+        </li>
+      </ul>
 		</form>
       </section>
     </div>

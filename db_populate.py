@@ -26,9 +26,14 @@ with urllib.request.urlopen(api_url) as url:
 papers = xmltodict.parse(s, xml_attribs=True)
 
 # Inserting new Category
-cur.execute("INSERT INTO category (c_name) VALUES ('" + category +"')")
-db.commit()
-c_id = cur.lastrowid
+cur.execute("SELECT c_id FROM category WHERE c_name='" + str(category) + "'")
+c_id = cur.fetchone()
+if c_id is None:
+    cur.execute("INSERT INTO category (c_name) VALUES ('" + category +"')")
+    db.commit()
+    c_id = cur.lastrowid
+else:
+    c_id = c_id[0]
 
 for paper in papers["feed"]["entry"]:
     #print(paper)
@@ -44,21 +49,13 @@ for paper in papers["feed"]["entry"]:
         cur.execute("INSERT INTO research_paper (r_name, r_doi, r_year, r_pdf) VALUES ('" + "','".join(r_list) +"')")
         db.commit()
     except:
-        print("Insertion Error ! Paper already exist in database. DOI: ", r_doi)
+        print("Insertion Error ! Paper already exist in database with DOI: ", r_doi)
         continue
 
     r_id = cur.lastrowid
     # Insert authors and make connection
-    if type(paper["author"]) is list:
-        for author in paper["author"] :
-            a_name = author["name"].replace("'", "").replace('"', "")
-            a_institute = author.get("arxiv:affiliation", dict()).get("#text", "").replace("'", "").replace('"', "")
-            cur.execute("INSERT INTO author (a_name, a_institute) VALUES ('" + "','".join([a_name, a_institute]) +"')")
-            db.commit()
-            a_id = cur.lastrowid
-            cur.execute("INSERT INTO written_by (r_id, a_id) VALUES ('" + "','".join([str(r_id), str(a_id)]) +"')")
-            db.commit()
-    else:
+    authors = paper["author"] if type(paper["author"]) is list else [paper["author"]]
+    for author in authors:
         a_name = author["name"].replace("'", "").replace('"', "")
         a_institute = author.get("arxiv:affiliation", dict()).get("#text", "").replace("'", "").replace('"', "")
         cur.execute("INSERT INTO author (a_name, a_institute) VALUES ('" + "','".join([a_name, a_institute]) +"')")
@@ -78,5 +75,7 @@ for paper in papers["feed"]["entry"]:
     # Mapping Category to paper
     cur.execute("INSERT INTO correspond_to (r_id, c_id) VALUES ('" + "','".join([str(r_id), str(c_id)]) +"')")
     db.commit()
+
+    print("Research Paper of DOI:", r_doi, " is successfully inserted!")
 
 db.close()
