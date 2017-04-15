@@ -67,7 +67,7 @@ li{
 		$category=$_POST['category'];
 		$year=$_POST['year'];
 
-		$sql = "SELECT * FROM research_paper natural join written_by natural join author natural join correspond_to natural join category natural join key_map natural join words WHERE ";
+		$sql = "SELECT r_name,r_year,c_name FROM research_paper natural join written_by natural join author natural join correspond_to natural join category natural join key_map natural join words WHERE ";
 		if($title == '' && $author == '' && $category == '' && $year == '') {
 			die('Please enter some Information to find data from');
 		}
@@ -85,22 +85,29 @@ li{
 				$sql = $sql."r_year = $year AND  ";
 			}
 			$sql = $sql."1 ";
-			$sql = $sql."ORDER BY r_year desc, r_name, a_name ;";
+			$sql = $sql."  GROUP BY r_name,r_year,c_name ORDER BY r_year desc, r_name ;";
 		}
 		//echo $sql;
 		if ($result=mysqli_query($conn,$sql)){
 		echo "<ul>";
 			while ($obj=mysqli_fetch_object($result)){
 				$linktopaper = "http://dx.doi.org/".$obj->r_doi;
+				$sql2 = "SELECT a_name,a_id,a_institute FROM research_paper natural join written_by natural join author WHERE r_name = '$obj->r_name'";		
+				$result2=mysqli_query($conn,$sql2);		
 				echo "
 		<li> <h1><a href=$linktopaper>$obj->r_name</a></h1>
 			<ul>
-			  <li>Written by: $obj->a_name
-				 <ul>
-					<li>author-id: $obj->a_id</li>
-					<li>email-id: $obj->a_email</li>
-				</ul>
-			  </li>
+			  <li>Written by:<ul>";
+				while ($obj2=mysqli_fetch_object($result2))
+				{
+					echo "	<li> $obj2->a_name
+							<ul>
+								<li>author-id: $obj2->a_id</li>
+								<li>Institute: $obj2->a_institute</li>
+							</ul></li>" ;
+						
+				}
+			echo" </ul></li>
 			  <li>Category: $obj->c_name</li>
 			  <li>Published in $obj->r_year</li>
 			</ul>

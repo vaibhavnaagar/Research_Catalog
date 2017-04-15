@@ -35,18 +35,18 @@
 
 		$obj=mysqli_fetch_object($retval);
 		if($obj->password == $pswd){
-      if ((session_status() == PHP_SESSION_ACTIVE) && (array_key_exists('token', $_SESSION)) && ($_SESSION['token'] == $un))
-        echo '<h2 align="center"><font size="3" color="red">User already logged in!</font></h2>';
-      else{
-        @session_destroy();
-        @session_start();
-        $_SESSION = array();
-        $_SESSION['token'] = $un;
-      }
+		      if ((session_status() == PHP_SESSION_ACTIVE) && (array_key_exists('token', $_SESSION)) && ($_SESSION['token'] == $un))
+			echo '<h2 align="center"><font size="3" color="red">User already logged in!</font></h2>';
+		      else{
+			@session_destroy();
+			@session_start();
+			$_SESSION = array();
+			$_SESSION['token'] = $un;
+		      }
 			header("Location:simple_search.php");
-  		exit;
+  			exit;
 		}
-		else{
+		else{	
 			echo '<h2 align="center"><font size="3" color="red">Username or Password incorrect</font></h2>';
 		}
 		mysqli_close($conn);

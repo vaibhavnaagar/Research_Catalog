@@ -97,7 +97,7 @@ li{
 			<ul>
 			  <li>Author: $obj->a_name
 				 <ul>
-					<li>Institute: $obj->a_email</li>
+					<li>Institute: $obj->a_institute</li>
 				</ul>
 			  </li>
 			  <li>Category: $obj->c_name</li>

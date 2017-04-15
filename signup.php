@@ -30,7 +30,7 @@
 		$fn=$_POST['firstname'];
 		$ln=$_POST['lastname'];
 		$un=$_POST['username'];
-		$pswd=$_POST['pswd'];
+		$pswd = hash("sha256", $_POST['pswd']);
 		$emailid=$_POST['emailid'];
 		if ($fn != '' && $ln != '' && $un != '' && $pswd != '' && $emailid != ''){
 			$sql = "INSERT INTO users (firstname, lastname, username, password, email)
