@@ -88,7 +88,7 @@ input[type="submit"]:hover{
       <ul>
         <li><a href="#">Normal Search</a></li>
         <li><a href="advsearch.php">Advanced Search</a></li>
-        <li><a href="#">Add Paper</a></li>
+        <li><a href="add_papers.php">Add Paper</a></li>
         <li class="last"><a href="logout.php">Log out</a></li>
       </ul>
     </nav>

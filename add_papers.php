@@ -12,6 +12,8 @@ if ((@session_status() != PHP_SESSION_ACTIVE) || !(isset($_SESSION['token']))){
 <title>Research Catalouge</title>
 <meta charset="iso-8859-1">
 <link rel="stylesheet" href="styles/layout.css" type="text/css">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
 <!--[if lt IE 9]><script src="scripts/html5shiv.js"></script><![endif]-->
 <style>
 .button {
@@ -25,10 +27,6 @@ if ((@session_status() != PHP_SESSION_ACTIVE) || !(isset($_SESSION['token']))){
     font-size: 16px;
     margin: 4px 2px;
     cursor: pointer;
-}
-label{
-    display:inline-block;
-    width:100px;
 }
 li{
     color:#555555;
@@ -91,8 +89,8 @@ input[type="submit"]:hover{
     <nav>
       <ul>
         <li><a href="simple_search.php">Normal Search</a></li>
-        <li><a href="#">Advanced Search</a></li>
-        <li><a href="add_papers.php">Add Paper</a></li>
+        <li><a href="advsearch.php">Advanced Search</a></li>
+        <li><a href="#">Add Paper</a></li>
         <li class="last"><a href="logout.php">Log out</a></li>
       </ul>
     </nav>
@@ -102,34 +100,35 @@ input[type="submit"]:hover{
 <div class="wrapper row2">
   <div id="container" class="clear">
     <div id="intro">
-      <section class="clear">
+      <!--section class="clear"-->
         <!-- article 1 -->
+  <section class="clear">
   <!--header id="header" class="clear"-->
 	<div id="hgroup">
 
-	<h1 style="text-align:center;font-size:36px;font-style:normal;"><b> Advanced Search</b></h1><br></br>
+	<h3 style="text-align:center;font-size:36px;font-style:normal;padding:5px;"><b>Add Research papers in bulk using <a href='https://arxiv.org/help/api/index'> arxiv api</a> </b></h3><br></br>
 	</div>
   <!--/header-->
-		<form action="advresult.php" method="post" >
+		<form action="addresults.php" method="post" >
+
+
       <ul class="input-list style-1 clearfix">
         <li>
-		        <label>Paper Title</label>: <input type="text" name="title"><br></br>
+        <h5><b style="font-style:normal;">Category :</b></h5><input type="text" placeholder=""  name="keyword" required>
         </li>
         <li>
-		        <label>Author </label>: <input type="text" name="author"><br></br>
+        <h5><b style="font-style:normal;">Max number of papers:<b style="font-style:normal;"></h5>  <input type="text" placeholder=""  name="num_papers" required>
         </li>
         <li>
-		        <label>Category </label>: <input type="text" name="category"><br></br>
-        </li>
-        <li>
-		        <label>Year of Publication </label>: <input type="text" name="year"><br></br>
-        </li>
-        <li>
-		        <input type="submit" class="button" value="Search">
-        </li>
+        <input type="submit" class="button" value="Add">
+      </li>
       </ul>
+    <br/>
 		</form>
-      </section>
+
+  </section>
+
+      <!--/section-->
     </div>
   </div>
 </div>

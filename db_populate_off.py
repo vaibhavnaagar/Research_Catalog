@@ -26,7 +26,6 @@ with urllib.request.urlopen(api_url, context=context) as url:
     s = url.read()
 papers = xmltodict.parse(s, xml_attribs=True)
 
-print(api_url)
 # Inserting new Category
 cur.execute("SELECT c_id FROM category WHERE c_name='" + str(category) + "'")
 c_id = cur.fetchone()
@@ -85,4 +84,4 @@ for i, paper in enumerate(research_papers):
     print("Research Paper of DOI:", r_doi, " is successfully inserted!")
 
 db.close()
-print(json.dumps(result))
+#print(json.dumps(result))
